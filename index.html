@@ -1,0 +1,3398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- ============================================================
+         SECTION 01 — CONFIGURATION
+         ============================================================
+
+         Purpose:
+         Global application settings and page metadata.
+
+         PATCHING:
+         If you want to change application name, version, etc.,
+         start here.
+    ============================================================ -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Squadron Training Coordination System</title>
+
+    <style>
+
+        /* =========================================================
+           SECTION 02 — GLOBAL STYLING
+           =========================================================
+
+           PATCHING:
+           Modify this section for:
+           - colors
+           - fonts
+           - spacing
+           - buttons
+           - tables
+           - responsive behavior
+        ========================================================= */
+
+        :root {
+            --bg: #f3f4f6;
+            --panel: #ffffff;
+            --border: #d1d5db;
+            --text: #111827;
+            --muted: #6b7280;
+            --primary: #1f4e79;
+            --primary-dark: #163a5c;
+            --success: #166534;
+            --success-bg: #dcfce7;
+            --warning: #92400e;
+            --warning-bg: #fef3c7;
+            --danger: #991b1b;
+            --danger-bg: #fee2e2;
+            --info: #1e40af;
+            --info-bg: #dbeafe;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           SECTION 03 — APPLICATION HEADER
+        ========================================================= */
+
+        .topbar {
+            height: 64px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            box-shadow: 0 2px 5px rgba(0,0,0,.15);
+        }
+
+        .brand {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .brand-subtitle {
+            font-size: 12px;
+            opacity: .8;
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            font-size: 13px;
+            opacity: .9;
+        }
+
+        /* =========================================================
+           SECTION 04 — MAIN APPLICATION LAYOUT
+        ========================================================= */
+
+        .app {
+            display: flex;
+            min-height: calc(100vh - 64px);
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #111827;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section {
+            padding: 14px 16px 7px;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+
+        .nav-button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #d1d5db;
+            text-align: left;
+            padding: 11px 18px;
+            font-size: 14px;
+        }
+
+        .nav-button:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .nav-button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 24px;
+            overflow-x: auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .page-description {
+            color: var(--muted);
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           SECTION 05 — CARDS / DASHBOARD COMPONENTS
+        ========================================================= */
+
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,.04);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .stat-note {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        /* =========================================================
+           SECTION 06 — BUTTONS
+        ========================================================= */
+
+        .btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            background: #f9fafb;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-danger {
+            color: white;
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .btn-success {
+            color: white;
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* =========================================================
+           SECTION 07 — TABLES
+        ========================================================= */
+
+        .table-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: #f9fafb;
+            text-align: left;
+            font-weight: bold;
+            color: #374151;
+            padding: 11px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 11px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafafa;
+        }
+
+        /* =========================================================
+           SECTION 08 — FORM ELEMENTS
+        ========================================================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 9px;
+            background: white;
+            font-size: 13px;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* =========================================================
+           SECTION 09 — STATUS BADGES
+        ========================================================= */
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .badge-success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .badge-info {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+
+        /* =========================================================
+           SECTION 10 — ALERTS
+        ========================================================= */
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .alert-warning {
+            background: var(--warning-bg);
+            color: var(--warning);
+            border: 1px solid #fcd34d;
+        }
+
+        .alert-danger {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid #fca5a5;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid #86efac;
+        }
+
+        /* =========================================================
+           SECTION 11 — SCHEDULE CALENDAR
+        ========================================================= */
+
+        .calendar {
+            display: grid;
+            grid-template-columns: 90px repeat(7, minmax(140px, 1fr));
+            border: 1px solid var(--border);
+            background: white;
+            overflow-x: auto;
+        }
+
+        .calendar-header {
+            background: #f3f4f6;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 10px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .calendar-time {
+            padding: 10px;
+            font-size: 11px;
+            color: var(--muted);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .calendar-cell {
+            min-height: 75px;
+            padding: 5px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .event-block {
+            border-left: 4px solid var(--primary);
+            background: #eaf2f8;
+            padding: 7px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .event-title {
+            font-weight: bold;
+        }
+
+        .event-meta {
+            color: #4b5563;
+            margin-top: 3px;
+        }
+
+        /* =========================================================
+           SECTION 12 — CANDIDATE FINDER
+        ========================================================= */
+
+        .candidate {
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 13px;
+            margin-bottom: 8px;
+            background: white;
+        }
+
+        .candidate-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .candidate-name {
+            font-weight: bold;
+        }
+
+        .candidate-reason {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        /* =========================================================
+           SECTION 13 — MODAL
+        ========================================================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 9px;
+            width: min(700px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,.25);
+        }
+
+        .modal-header {
+            padding: 17px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .close-button {
+            border: none;
+            background: transparent;
+            font-size: 20px;
+        }
+
+        /* =========================================================
+           SECTION 14 — RESPONSIVE DESIGN
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sidebar {
+                width: 180px;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .app {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .grid-4,
+            .grid-3,
+            .grid-2,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================================================================
+     SECTION 15 — APPLICATION HEADER
+================================================================ -->
+
+<header class="topbar">
+
+    <div>
+        <div class="brand">
+            Squadron Training Coordination System
+        </div>
+
+        <div class="brand-subtitle">
+            Prototype v1.0 | Planning / Coordination / Deconfliction
+        </div>
+    </div>
+
+    <div class="topbar-right">
+        Environment: LOCAL PROTOTYPE
+    </div>
+
+</header>
+
+
+<!-- ================================================================
+     SECTION 16 — APPLICATION BODY
+================================================================ -->
+
+<div class="app">
+
+    <!-- ============================================================
+         SECTION 17 — NAVIGATION
+    ============================================================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-section">
+            Coordination
+        </div>
+
+        <button class="nav-button active"
+                onclick="showPage('dashboard', this)">
+            Dashboard
+        </button>
+
+        <button class="nav-button"
+                onclick="showPage('schedule', this)">
+            2-Week Schedule
+        </button>
+
+        <button class="nav-button"
+                onclick="showPage('events', this)">
+            Training Events
+        </button>
+
+        <button class="nav-button"
+                onclick="showPage('conflicts', this)">
+            Conflicts
+        </button>
+
+
+        <div class="sidebar-section">
+            Personnel
+        </div>
+
+        <button class="nav-button"
+                onclick="showPage('personnel', this)">
+            Personnel
+        </button>
+
+        <button class="nav-button"
+                onclick="showPage('candidates', this)">
+            Candidate Finder
+        </button>
+
+
+        <div class="sidebar-section">
+            Resources
+        </div>
+
+        <button class="nav-button"
+                onclick="showPage('resources', this)">
+            Resources
+        </button>
+
+
+        <div class="sidebar-section">
+            Management
+        </div>
+
+        <button class="nav-button"
+                onclick="showPage('reports', this)">
+            Reports
+        </button>
+
+    </aside>
+
+
+    <!-- ============================================================
+         SECTION 18 — MAIN CONTENT
+    ============================================================= -->
+
+    <main class="content">
+
+
+        <!-- ========================================================
+             SECTION 19 — DASHBOARD
+        ========================================================= -->
+
+        <section id="page-dashboard" class="page active">
+
+            <div class="page-header">
+
+                <div>
+                    <h1 class="page-title">
+                        Dashboard
+                    </h1>
+
+                    <div class="page-description">
+                        Multi-squadron training coordination overview.
+                    </div>
+                </div>
+
+                <button class="btn btn-primary"
+                        onclick="openEventModal()">
+                    + New Training Event
+                </button>
+
+            </div>
+
+
+            <div class="grid grid-4">
+
+                <div class="card">
+                    <div class="stat-label">
+                        Active Squadrons
+                    </div>
+
+                    <div class="stat-value"
+                         id="stat-squadrons">
+                        0
+                    </div>
+
+                    <div class="stat-note">
+                        Participating organizations
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="stat-label">
+                        Upcoming Events
+                    </div>
+
+                    <div class="stat-value"
+                         id="stat-events">
+                        0
+                    </div>
+
+                    <div class="stat-note">
+                        Next 14 days
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="stat-label">
+                        Resource Conflicts
+                    </div>
+
+                    <div class="stat-value"
+                         id="stat-conflicts">
+                        0
+                    </div>
+
+                    <div class="stat-note">
+                        Detected scheduling conflicts
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="stat-label">
+                        Personnel
+                    </div>
+
+                    <div class="stat-value"
+                         id="stat-personnel">
+                        0
+                    </div>
+
+                    <div class="stat-note">
+                        Personnel in database
+                    </div>
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="grid grid-2">
+
+                <div class="card">
+
+                    <h3>
+                        Upcoming Training
+                    </h3>
+
+                    <div id="dashboard-events">
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        Current Conflicts
+                    </h3>
+
+                    <div id="dashboard-conflicts">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================
+             SECTION 20 — PERSONNEL
+        ========================================================= -->
+
+        <section id="page-personnel" class="page">
+
+            <div class="page-header">
+
+                <div>
+                    <h1 class="page-title">
+                        Personnel
+                    </h1>
+
+                    <div class="page-description">
+                        Personnel qualifications and scheduling availability.
+                    </div>
+                </div>
+
+                <button class="btn btn-primary"
+                        onclick="openPersonnelModal()">
+                    + Add Member
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Squadron</th>
+                            <th>Keyword</th>
+                            <th>Qualification</th>
+                            <th>Position</th>
+                            <th>CMR</th>
+                            <th>Experience</th>
+                            <th>Duty Code</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="personnel-table">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================
+             SECTION 21 — TRAINING EVENTS
+        ========================================================= -->
+
+        <section id="page-events" class="page">
+
+            <div class="page-header">
+
+                <div>
+                    <h1 class="page-title">
+                        Training Events
+                    </h1>
+
+                    <div class="page-description">
+                        Create and manage planned training events.
+                    </div>
+                </div>
+
+                <button class="btn btn-primary"
+                        onclick="openEventModal()">
+                    + New Event
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Squadron</th>
+                            <th>Training</th>
+                            <th>Location</th>
+                            <th>Teams</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="events-table">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================
+             SECTION 22 — RESOURCES
+        ========================================================= -->
+
+        <section id="page-resources" class="page">
+
+            <div class="page-header">
+
+                <div>
+                    <h1 class="page-title">
+                        Shared Resources
+                    </h1>
+
+                    <div class="page-description">
+                        Shared locations and scheduling resources.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Resource</th>
+                            <th>Type</th>
+                            <th>Capacity</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="resources-table">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================
+             SECTION 23 — 2-WEEK SCHEDULE
+        ========================================================= -->
+
+        <section id="page-schedule" class="page">
+
+            <div class="page-header">
+
+                <div>
+                    <h1 class="page-title">
+                        2-Week Schedule
+                    </h1>
+
+                    <div class="page-description">
+                        Shared training and resource outlook.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="schedule-calendar">
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================
+             SECTION 24 — CONFLICTS
+        ========================================================= -->
+
+        <section id="page-conflicts" class="page">
+
+            <div class="page-header">
+
+                <div>
+                    <h1 class="page-title">
+                        Conflict Manager
+                    </h1>
+
+                    <div class="page-description">
+                        Resource and schedule conflicts detected by the system.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="conflict-list">
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================
+             SECTION 25 — CANDIDATE FINDER
+        ========================================================= -->
+
+        <section id="page-candidates" class="page">
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1 class="page-title">
+                        Candidate Finder
+                    </h1>
+
+                    <div class="page-description">
+                        Identify personnel who meet event assignment requirements.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Squadron
+                        </label>
+
+                        <select id="candidate-squadron">
+
+                            <option value="">
+                                Any Squadron
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Position
+                        </label>
+
+                        <select id="candidate-position">
+
+                            <option value="">
+                                Select Position
+                            </option>
+
+                            <option value="O">
+                                ABM
+                            </option>
+
+                            <option value="M">
+                                MSO
+                            </option>
+
+                            <option value="W">
+                                Weapons Director
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Minimum Qualification
+                        </label>
+
+                        <select id="candidate-qualification">
+
+                            <option value="">
+                                Any
+                            </option>
+
+                            <option value="F">
+                                Basic Qualified
+                            </option>
+
+                            <option value="M">
+                                Qualified
+                            </option>
+
+                            <option value="I">
+                                Instructor
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Experience
+                        </label>
+
+                        <select id="candidate-experience">
+
+                            <option value="">
+                                Any
+                            </option>
+
+                            <option value="E">
+                                Experienced
+                            </option>
+
+                            <option value="N">
+                                Not Experienced
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button class="btn btn-primary"
+                        onclick="findCandidates()">
+                    Find Candidates
+                </button>
+
+            </div>
+
+
+            <br>
+
+            <div id="candidate-results">
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================
+             SECTION 26 — REPORTS
+        ========================================================= -->
+
+        <section id="page-reports" class="page">
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1 class="page-title">
+                        Reports & Metrics
+                    </h1>
+
+                    <div class="page-description">
+                        High-level scheduling and utilization metrics.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="grid grid-3">
+
+                <div class="card">
+
+                    <div class="stat-label">
+                        Total Events
+                    </div>
+
+                    <div class="stat-value"
+                         id="report-total-events">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="stat-label">
+                        Total Teams
+                    </div>
+
+                    <div class="stat-value"
+                         id="report-total-teams">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="stat-label">
+                        Conflicts
+                    </div>
+
+                    <div class="stat-value"
+                         id="report-total-conflicts">
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="card">
+
+                <h3>
+                    Events by Squadron
+                </h3>
+
+                <div id="report-squadrons">
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- ================================================================
+     SECTION 27 — PERSONNEL MODAL
+================================================================ -->
+
+<div id="personnel-modal"
+     class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                Add Personnel
+            </div>
+
+            <button class="close-button"
+                    onclick="closeModal('personnel-modal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input id="member-name"
+                           placeholder="Example: John Smith">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Squadron
+                    </label>
+
+                    <select id="member-squadron">
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Qualification
+                    </label>
+
+                    <select id="member-qualification">
+
+                        <option value="U">
+                            U — Unqualified
+                        </option>
+
+                        <option value="F">
+                            F — Basic Qualified
+                        </option>
+
+                        <option value="M"
+                                selected>
+                            M — Qualified
+                        </option>
+
+                        <option value="I">
+                            I — Instructor
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Position
+                    </label>
+
+                    <select id="member-position">
+
+                        <option value="O">
+                            O — ABM
+                        </option>
+
+                        <option value="M">
+                            M — MSO
+                        </option>
+
+                        <option value="W">
+                            W — Weapons Director
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        CMR
+                    </label>
+
+                    <select id="member-cmr">
+
+                        <option value="A">
+                            A — CMR
+                        </option>
+
+                        <option value="N">
+                            N — Not CMR
+                        </option>
+
+                        <option value="B">
+                            B — BMC
+                        </option>
+
+                        <option value="I">
+                            I — IQT Complete
+                        </option>
+
+                        <option value="M">
+                            M — MQT Complete
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Experience
+                    </label>
+
+                    <select id="member-experience">
+
+                        <option value="E">
+                            E — Experienced
+                        </option>
+
+                        <option value="N">
+                            N — Not Experienced
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button class="btn"
+                    onclick="closeModal('personnel-modal')">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary"
+                    onclick="savePersonnel()">
+                Save Member
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================================
+     SECTION 28 — TRAINING EVENT MODAL
+================================================================ -->
+
+<div id="event-modal"
+     class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                New Training Event
+            </div>
+
+            <button class="close-button"
+                    onclick="closeModal('event-modal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Squadron
+                    </label>
+
+                    <select id="event-squadron">
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Training Type
+                    </label>
+
+                    <input id="event-training"
+                           placeholder="Example: Mission Training">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Date
+                    </label>
+
+                    <input id="event-date"
+                           type="date">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Number of Teams
+                    </label>
+
+                    <input id="event-teams"
+                           type="number"
+                           min="1"
+                           value="1">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Start Time
+                    </label>
+
+                    <input id="event-start"
+                           type="time"
+                           value="09:00">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        End Time
+                    </label>
+
+                    <input id="event-end"
+                           type="time"
+                           value="11:00">
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Resource / Location
+                    </label>
+
+                    <select id="event-resource">
+                    </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Notes
+                    </label>
+
+                    <textarea id="event-notes"
+                              placeholder="Optional planning notes"></textarea>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button class="btn"
+                    onclick="closeModal('event-modal')">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary"
+                    onclick="saveEvent()">
+                Save Event
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================================
+     SECTION 29 — JAVASCRIPT APPLICATION DATA
+================================================================ -->
+
+<script>
+
+    /* =============================================================
+       SECTION 29.1 — APPLICATION STATE
+
+       IMPORTANT:
+       This is currently a browser/localStorage database.
+
+       FUTURE:
+       We will eventually replace this with a real backend database.
+    ============================================================= */
+
+    const APP_KEY = "STCS_PROTOTYPE_DATA_V1";
+
+
+    let appData = {
+
+        squadrons: [
+            {
+                id: 1,
+                name: "123 SQ",
+                active: true
+            },
+            {
+                id: 2,
+                name: "456 SQ",
+                active: true
+            },
+            {
+                id: 3,
+                name: "789 SQ",
+                active: true
+            }
+        ],
+
+
+        members: [
+
+            {
+                id: 1,
+                name: "John Smith",
+                squadronId: 1,
+                qualification: "M",
+                position: "O",
+                cmr: "A",
+                experience: "E",
+                active: true
+            },
+
+            {
+                id: 2,
+                name: "Jane Doe",
+                squadronId: 1,
+                qualification: "I",
+                position: "M",
+                cmr: "A",
+                experience: "E",
+                active: true
+            },
+
+            {
+                id: 3,
+                name: "Robert Jones",
+                squadronId: 2,
+                qualification: "M",
+                position: "O",
+                cmr: "A",
+                experience: "N",
+                active: true
+            },
+
+            {
+                id: 4,
+                name: "Michael Brown",
+                squadronId: 2,
+                qualification: "F",
+                position: "M",
+                cmr: "M",
+                experience: "N",
+                active: true
+            },
+
+            {
+                id: 5,
+                name: "Sarah Davis",
+                squadronId: 3,
+                qualification: "I",
+                position: "O",
+                cmr: "A",
+                experience: "E",
+                active: true
+            }
+
+        ],
+
+
+        resources: [
+
+            {
+                id: 1,
+                name: "Training Site A",
+                type: "Training Site",
+                capacity: 1,
+                active: true
+            },
+
+            {
+                id: 2,
+                name: "Training Site B",
+                type: "Training Site",
+                capacity: 1,
+                active: true
+            },
+
+            {
+                id: 3,
+                name: "Simulator 1",
+                type: "Simulator",
+                capacity: 1,
+                active: true
+            },
+
+            {
+                id: 4,
+                name: "Classroom 1",
+                type: "Classroom",
+                capacity: 1,
+                active: true
+            }
+
+        ],
+
+
+        events: [
+
+            {
+                id: 1,
+                squadronId: 1,
+                training: "Mission Training",
+                date: getDateOffset(1),
+                start: "0900",
+                end: "1100",
+                resourceId: 1,
+                teams: 2,
+                status: "Draft",
+                notes: ""
+            },
+
+            {
+                id: 2,
+                squadronId: 2,
+                training: "Mission Training",
+                date: getDateOffset(1),
+                start: "1000",
+                end: "1200",
+                resourceId: 1,
+                teams: 1,
+                status: "Draft",
+                notes: ""
+            },
+
+            {
+                id: 3,
+                squadronId: 3,
+                training: "Qualification Training",
+                date: getDateOffset(3),
+                start: "1300",
+                end: "1500",
+                resourceId: 2,
+                teams: 1,
+                status: "Draft",
+                notes: ""
+            }
+
+        ]
+
+    };
+
+
+    /* =============================================================
+       SECTION 29.2 — DATE UTILITIES
+    ============================================================= */
+
+    function getDateOffset(days) {
+
+        const date = new Date();
+
+        date.setDate(date.getDate() + days);
+
+        return date.toISOString().split("T")[0];
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.3 — LOCAL STORAGE
+    ============================================================= */
+
+    function loadData() {
+
+        const saved = localStorage.getItem(APP_KEY);
+
+        if (saved) {
+
+            try {
+
+                appData = JSON.parse(saved);
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load saved application data.",
+                    error
+                );
+
+            }
+
+        }
+
+    }
+
+
+    function saveData() {
+
+        localStorage.setItem(
+            APP_KEY,
+            JSON.stringify(appData)
+        );
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.4 — NAVIGATION
+    ============================================================= */
+
+    function showPage(pageName, button) {
+
+        document.querySelectorAll(".page")
+            .forEach(page => page.classList.remove("active"));
+
+        document.querySelectorAll(".nav-button")
+            .forEach(btn => btn.classList.remove("active"));
+
+        const page = document.getElementById(
+            "page-" + pageName
+        );
+
+        if (page) {
+            page.classList.add("active");
+        }
+
+        if (button) {
+            button.classList.add("active");
+        }
+
+        renderAll();
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.5 — LOOKUP FUNCTIONS
+    ============================================================= */
+
+    function getSquadron(id) {
+
+        return appData.squadrons.find(
+            s => s.id === Number(id)
+        );
+
+    }
+
+
+    function getResource(id) {
+
+        return appData.resources.find(
+            r => r.id === Number(id)
+        );
+
+    }
+
+
+    function getSquadronName(id) {
+
+        const squadron = getSquadron(id);
+
+        return squadron
+            ? squadron.name
+            : "Unknown";
+
+    }
+
+
+    function getResourceName(id) {
+
+        const resource = getResource(id);
+
+        return resource
+            ? resource.name
+            : "Unknown";
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.6 — PERSONNEL DISPLAY LOGIC
+    ============================================================= */
+
+    function getKeyword(name) {
+
+        const parts = name.trim().split(/\s+/);
+
+        if (parts.length < 2) {
+            return name;
+        }
+
+        const firstName = parts[0];
+
+        const lastName = parts[parts.length - 1];
+
+        return lastName + ", " + firstName.charAt(0);
+
+    }
+
+
+    function getDutyCode(member) {
+
+        return (
+            member.qualification +
+            member.position +
+            member.cmr +
+            member.experience
+        );
+
+    }
+
+
+    function qualificationLabel(code) {
+
+        const labels = {
+            U: "Unqualified",
+            F: "Basic Qualified",
+            M: "Qualified",
+            I: "Instructor"
+        };
+
+        return labels[code] || code;
+
+    }
+
+
+    function positionLabel(code) {
+
+        const labels = {
+            O: "ABM",
+            M: "MSO",
+            W: "Weapons Director"
+        };
+
+        return labels[code] || code;
+
+    }
+
+
+    function cmrLabel(code) {
+
+        const labels = {
+            A: "CMR",
+            N: "Not CMR",
+            B: "BMC",
+            I: "IQT Complete",
+            M: "MQT Complete"
+        };
+
+        return labels[code] || code;
+
+    }
+
+
+    function experienceLabel(code) {
+
+        return code === "E"
+            ? "Experienced"
+            : "Not Experienced";
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.7 — MODALS
+    ============================================================= */
+
+    function openPersonnelModal() {
+
+        populateSquadronSelects();
+
+        document.getElementById(
+            "personnel-modal"
+        ).classList.add("open");
+
+    }
+
+
+    function openEventModal() {
+
+        populateSquadronSelects();
+
+        populateResourceSelect();
+
+        document.getElementById(
+            "event-date"
+        ).value = getDateOffset(1);
+
+        document.getElementById(
+            "event-modal"
+        ).classList.add("open");
+
+    }
+
+
+    function closeModal(id) {
+
+        document.getElementById(id)
+            .classList.remove("open");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.8 — DROPDOWN POPULATION
+    ============================================================= */
+
+    function populateSquadronSelects() {
+
+        const selects = [
+
+            "member-squadron",
+            "event-squadron",
+            "candidate-squadron"
+
+        ];
+
+
+        selects.forEach(selectId => {
+
+            const select =
+                document.getElementById(selectId);
+
+            if (!select) return;
+
+
+            const firstOption =
+                selectId === "candidate-squadron"
+                    ? '<option value="">Any Squadron</option>'
+                    : '<option value="">Select Squadron</option>';
+
+
+            select.innerHTML = firstOption;
+
+
+            appData.squadrons
+                .filter(s => s.active)
+                .forEach(squadron => {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = squadron.id;
+
+                    option.textContent =
+                        squadron.name;
+
+                    select.appendChild(option);
+
+                });
+
+        });
+
+    }
+
+
+    function populateResourceSelect() {
+
+        const select =
+            document.getElementById("event-resource");
+
+        select.innerHTML =
+            '<option value="">Select Resource</option>';
+
+
+        appData.resources
+            .filter(r => r.active)
+            .forEach(resource => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = resource.id;
+
+                option.textContent =
+                    resource.name;
+
+                select.appendChild(option);
+
+            });
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.9 — SAVE PERSONNEL
+    ============================================================= */
+
+    function savePersonnel() {
+
+        const name =
+            document.getElementById("member-name")
+                .value.trim();
+
+        const squadronId =
+            Number(
+                document.getElementById("member-squadron")
+                    .value
+            );
+
+
+        if (!name || !squadronId) {
+
+            alert(
+                "Please enter a name and select a squadron."
+            );
+
+            return;
+
+        }
+
+
+        const member = {
+
+            id: Date.now(),
+
+            name: name,
+
+            squadronId: squadronId,
+
+            qualification:
+                document.getElementById(
+                    "member-qualification"
+                ).value,
+
+            position:
+                document.getElementById(
+                    "member-position"
+                ).value,
+
+            cmr:
+                document.getElementById(
+                    "member-cmr"
+                ).value,
+
+            experience:
+                document.getElementById(
+                    "member-experience"
+                ).value,
+
+            active: true
+
+        };
+
+
+        appData.members.push(member);
+
+        saveData();
+
+        closeModal("personnel-modal");
+
+        renderAll();
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.10 — SAVE TRAINING EVENT
+    ============================================================= */
+
+    function saveEvent() {
+
+        const squadronId =
+            Number(
+                document.getElementById(
+                    "event-squadron"
+                ).value
+            );
+
+
+        const training =
+            document.getElementById(
+                "event-training"
+            ).value.trim();
+
+
+        const date =
+            document.getElementById(
+                "event-date"
+            ).value;
+
+
+        const start =
+            document.getElementById(
+                "event-start"
+            ).value.replace(":", "");
+
+
+        const end =
+            document.getElementById(
+                "event-end"
+            ).value.replace(":", "");
+
+
+        const resourceId =
+            Number(
+                document.getElementById(
+                    "event-resource"
+                ).value
+            );
+
+
+        const teams =
+            Number(
+                document.getElementById(
+                    "event-teams"
+                ).value
+            );
+
+
+        const notes =
+            document.getElementById(
+                "event-notes"
+            ).value;
+
+
+        if (
+            !squadronId ||
+            !training ||
+            !date ||
+            !start ||
+            !end ||
+            !resourceId
+        ) {
+
+            alert(
+                "Please complete all required fields."
+            );
+
+            return;
+
+        }
+
+
+        if (Number(start) >= Number(end)) {
+
+            alert(
+                "End time must be after start time."
+            );
+
+            return;
+
+        }
+
+
+        const event = {
+
+            id: Date.now(),
+
+            squadronId,
+
+            training,
+
+            date,
+
+            start,
+
+            end,
+
+            resourceId,
+
+            teams,
+
+            status: "Draft",
+
+            notes
+
+        };
+
+
+        appData.events.push(event);
+
+        saveData();
+
+        closeModal("event-modal");
+
+        renderAll();
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.11 — CONFLICT DETECTION
+       =============================================================
+
+       CURRENT RULE:
+
+       Two events conflict if:
+       - same resource
+       - same date
+       - time periods overlap
+
+       FUTURE PATCHES:
+
+       We can add:
+       - setup time
+       - teardown time
+       - resource capacity
+       - multiple simultaneous users
+       - priority
+       - exemptions
+       - approval status
+    ============================================================= */
+
+    function timesOverlap(
+        startA,
+        endA,
+        startB,
+        endB
+    ) {
+
+        return (
+            Number(startA) < Number(endB) &&
+            Number(startB) < Number(endA)
+        );
+
+    }
+
+
+    function getConflicts() {
+
+        const conflicts = [];
+
+
+        for (
+            let i = 0;
+            i < appData.events.length;
+            i++
+        ) {
+
+            for (
+                let j = i + 1;
+                j < appData.events.length;
+                j++
+            ) {
+
+                const a =
+                    appData.events[i];
+
+                const b =
+                    appData.events[j];
+
+
+                if (
+                    a.date === b.date &&
+                    a.resourceId === b.resourceId &&
+                    timesOverlap(
+                        a.start,
+                        a.end,
+                        b.start,
+                        b.end
+                    )
+                ) {
+
+                    conflicts.push({
+
+                        eventA: a,
+
+                        eventB: b,
+
+                        resource:
+                            getResourceName(
+                                a.resourceId
+                            )
+
+                    });
+
+                }
+
+            }
+
+        }
+
+
+        return conflicts;
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.12 — CANDIDATE FINDER
+    ============================================================= */
+
+    function findCandidates() {
+
+        const squadron =
+            document.getElementById(
+                "candidate-squadron"
+            ).value;
+
+
+        const position =
+            document.getElementById(
+                "candidate-position"
+            ).value;
+
+
+        const qualification =
+            document.getElementById(
+                "candidate-qualification"
+            ).value;
+
+
+        const experience =
+            document.getElementById(
+                "candidate-experience"
+            ).value;
+
+
+        let candidates =
+            appData.members.filter(
+                member => member.active
+            );
+
+
+        if (squadron) {
+
+            candidates =
+                candidates.filter(
+                    member =>
+                        member.squadronId ===
+                        Number(squadron)
+                );
+
+        }
+
+
+        if (position) {
+
+            candidates =
+                candidates.filter(
+                    member =>
+                        member.position === position
+                );
+
+        }
+
+
+        if (qualification) {
+
+            const rank = {
+                U: 0,
+                F: 1,
+                M: 2,
+                I: 3
+            };
+
+
+            candidates =
+                candidates.filter(
+                    member =>
+                        rank[member.qualification] >=
+                        rank[qualification]
+                );
+
+        }
+
+
+        if (experience) {
+
+            candidates =
+                candidates.filter(
+                    member =>
+                        member.experience === experience
+                );
+
+        }
+
+
+        renderCandidates(candidates);
+
+    }
+
+
+    function renderCandidates(candidates) {
+
+        const container =
+            document.getElementById(
+                "candidate-results"
+            );
+
+
+        if (!candidates.length) {
+
+            container.innerHTML = `
+
+                <div class="alert alert-warning">
+
+                    No personnel matched the selected
+                    criteria.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = candidates.map(
+            member => `
+
+                <div class="candidate">
+
+                    <div class="candidate-header">
+
+                        <div>
+
+                            <div class="candidate-name">
+
+                                ${escapeHtml(member.name)}
+
+                            </div>
+
+                            <div class="candidate-reason">
+
+                                ${escapeHtml(
+                                    getKeyword(member.name)
+                                )}
+
+                                |
+
+                                ${escapeHtml(
+                                    positionLabel(member.position)
+                                )}
+
+                                |
+
+                                ${escapeHtml(
+                                    qualificationLabel(
+                                        member.qualification
+                                    )
+                                )}
+
+                                |
+
+                                ${escapeHtml(
+                                    cmrLabel(member.cmr)
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="badge badge-success">
+
+                            ELIGIBLE
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `
+        ).join("");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.13 — ESCAPE HTML
+       ============================================================= */
+
+    function escapeHtml(value) {
+
+        return String(value)
+
+            .replaceAll("&", "&amp;")
+
+            .replaceAll("<", "&lt;")
+
+            .replaceAll(">", "&gt;")
+
+            .replaceAll('"', "&quot;")
+
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.14 — RENDER PERSONNEL
+    ============================================================= */
+
+    function renderPersonnel() {
+
+        const tbody =
+            document.getElementById(
+                "personnel-table"
+            );
+
+
+        tbody.innerHTML =
+            appData.members.map(
+                member => `
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHtml(member.name)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                getSquadronName(
+                                    member.squadronId
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                getKeyword(member.name)
+                            )}
+                        </td>
+
+                        <td>
+                            ${member.qualification}
+                            —
+                            ${qualificationLabel(
+                                member.qualification
+                            )}
+                        </td>
+
+                        <td>
+                            ${positionLabel(
+                                member.position
+                            )}
+                        </td>
+
+                        <td>
+                            ${cmrLabel(member.cmr)}
+                        </td>
+
+                        <td>
+                            ${experienceLabel(
+                                member.experience
+                            )}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${getDutyCode(member)}
+                            </strong>
+                        </td>
+
+                        <td>
+
+                            <span class="badge badge-success">
+                                Active
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `
+            ).join("");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.15 — RENDER EVENTS
+    ============================================================= */
+
+    function renderEvents() {
+
+        const tbody =
+            document.getElementById(
+                "events-table"
+            );
+
+
+        const events =
+            [...appData.events]
+                .sort(
+                    (a,b) =>
+                        (a.date + a.start)
+                            .localeCompare(
+                                b.date + b.start
+                            )
+                );
+
+
+        tbody.innerHTML =
+            events.map(
+                event => `
+
+                    <tr>
+
+                        <td>
+                            ${event.date}
+                        </td>
+
+                        <td>
+                            ${formatTime(event.start)}
+                            -
+                            ${formatTime(event.end)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                getSquadronName(
+                                    event.squadronId
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                event.training
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                getResourceName(
+                                    event.resourceId
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${event.teams}
+                        </td>
+
+                        <td>
+                            <span class="badge badge-info">
+                                ${event.status}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                `
+            ).join("");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.16 — RENDER RESOURCES
+    ============================================================= */
+
+    function renderResources() {
+
+        const tbody =
+            document.getElementById(
+                "resources-table"
+            );
+
+
+        tbody.innerHTML =
+            appData.resources.map(
+                resource => `
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHtml(resource.name)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHtml(resource.type)}
+                        </td>
+
+                        <td>
+                            ${resource.capacity}
+                        </td>
+
+                        <td>
+
+                            <span class="badge badge-success">
+                                Available
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `
+            ).join("");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.17 — RENDER CONFLICTS
+    ============================================================= */
+
+    function renderConflicts() {
+
+        const conflicts =
+            getConflicts();
+
+
+        const container =
+            document.getElementById(
+                "conflict-list"
+            );
+
+
+        if (!conflicts.length) {
+
+            container.innerHTML = `
+
+                <div class="alert alert-success">
+
+                    No resource conflicts detected.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            conflicts.map(
+                conflict => `
+
+                    <div class="alert alert-danger">
+
+                        <strong>
+                            RESOURCE CONFLICT
+                        </strong>
+
+                        <br>
+
+                        ${escapeHtml(
+                            conflict.resource
+                        )}
+
+                        is double-booked on
+
+                        ${conflict.eventA.date}.
+
+                        <br><br>
+
+                        <strong>
+                            ${escapeHtml(
+                                getSquadronName(
+                                    conflict.eventA.squadronId
+                                )
+                            )}
+                        </strong>
+
+                        ${formatTime(
+                            conflict.eventA.start
+                        )}
+                        -
+                        ${formatTime(
+                            conflict.eventA.end
+                        )}
+
+                        &nbsp; vs &nbsp;
+
+                        <strong>
+                            ${escapeHtml(
+                                getSquadronName(
+                                    conflict.eventB.squadronId
+                                )
+                            )}
+                        </strong>
+
+                        ${formatTime(
+                            conflict.eventB.start
+                        )}
+                        -
+                        ${formatTime(
+                            conflict.eventB.end
+                        )}
+
+                    </div>
+
+                `
+            ).join("");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.18 — RENDER DASHBOARD
+    ============================================================= */
+
+    function renderDashboard() {
+
+        const conflicts =
+            getConflicts();
+
+
+        document.getElementById(
+            "stat-squadrons"
+        ).textContent =
+            appData.squadrons.length;
+
+
+        document.getElementById(
+            "stat-events"
+        ).textContent =
+            appData.events.length;
+
+
+        document.getElementById(
+            "stat-conflicts"
+        ).textContent =
+            conflicts.length;
+
+
+        document.getElementById(
+            "stat-personnel"
+        ).textContent =
+            appData.members.length;
+
+
+        const eventContainer =
+            document.getElementById(
+                "dashboard-events"
+            );
+
+
+        const events =
+            [...appData.events]
+                .sort(
+                    (a,b) =>
+                        (a.date + a.start)
+                            .localeCompare(
+                                b.date + b.start
+                            )
+                )
+                .slice(0,5);
+
+
+        eventContainer.innerHTML =
+            events.map(
+                event => `
+
+                    <div class="candidate">
+
+                        <strong>
+                            ${escapeHtml(
+                                event.training
+                            )}
+                        </strong>
+
+                        <div class="candidate-reason">
+
+                            ${escapeHtml(
+                                getSquadronName(
+                                    event.squadronId
+                                )
+                            )}
+
+                            |
+
+                            ${event.date}
+
+                            |
+
+                            ${formatTime(event.start)}
+                            -
+                            ${formatTime(event.end)}
+
+                            |
+
+                            ${escapeHtml(
+                                getResourceName(
+                                    event.resourceId
+                                )
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `
+            ).join("");
+
+
+        if (!events.length) {
+
+            eventContainer.innerHTML =
+                "<p>No upcoming events.</p>";
+
+        }
+
+
+        const conflictContainer =
+            document.getElementById(
+                "dashboard-conflicts"
+            );
+
+
+        if (!conflicts.length) {
+
+            conflictContainer.innerHTML = `
+
+                <div class="alert alert-success">
+
+                    No conflicts detected.
+
+                </div>
+
+            `;
+
+        } else {
+
+            conflictContainer.innerHTML = `
+
+                <div class="alert alert-danger">
+
+                    <strong>
+                        ${conflicts.length}
+                    </strong>
+
+                    resource conflict(s) require
+                    attention.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.19 — RENDER SCHEDULE
+    ============================================================= */
+
+    function renderSchedule() {
+
+        const container =
+            document.getElementById(
+                "schedule-calendar"
+            );
+
+
+        const dates = [];
+
+        for (let i = 0; i < 7; i++) {
+
+            dates.push(
+                getDateOffset(i)
+            );
+
+        }
+
+
+        const times = [
+            "0800",
+            "0900",
+            "1000",
+            "1100",
+            "1200",
+            "1300",
+            "1400",
+            "1500"
+        ];
+
+
+        let html = `
+
+            <div class="calendar">
+
+                <div class="calendar-header">
+                    Time
+                </div>
+
+        `;
+
+
+        dates.forEach(date => {
+
+            const d =
+                new Date(
+                    date + "T12:00:00"
+                );
+
+
+            html += `
+
+                <div class="calendar-header">
+
+                    ${d.toLocaleDateString(
+                        undefined,
+                        {
+                            weekday: "short",
+                            month: "numeric",
+                            day: "numeric"
+                        }
+                    )}
+
+                </div>
+
+            `;
+
+        });
+
+
+        times.forEach(time => {
+
+            html += `
+
+                <div class="calendar-time">
+
+                    ${formatTime(time)}
+
+                </div>
+
+            `;
+
+
+            dates.forEach(date => {
+
+                const events =
+                    appData.events.filter(
+                        event =>
+                            event.date === date &&
+                            Number(event.start) <= Number(time) &&
+                            Number(event.end) > Number(time)
+                    );
+
+
+                html += `
+
+                    <div class="calendar-cell">
+
+                `;
+
+
+                events.forEach(event => {
+
+                    html += `
+
+                        <div class="event-block">
+
+                            <div class="event-title">
+
+                                ${escapeHtml(
+                                    event.training
+                                )}
+
+                            </div>
+
+                            <div class="event-meta">
+
+                                ${escapeHtml(
+                                    getSquadronName(
+                                        event.squadronId
+                                    )
+                                )}
+
+                                |
+
+                                ${escapeHtml(
+                                    getResourceName(
+                                        event.resourceId
+                                    )
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                });
+
+
+                html += `
+
+                    </div>
+
+                `;
+
+            });
+
+        });
+
+
+        html += `
+
+            </div>
+
+        `;
+
+
+        container.innerHTML = html;
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.20 — REPORTS
+    ============================================================= */
+
+    function renderReports() {
+
+        document.getElementById(
+            "report-total-events"
+        ).textContent =
+            appData.events.length;
+
+
+        document.getElementById(
+            "report-total-teams"
+        ).textContent =
+            appData.events.reduce(
+                (sum,event) =>
+                    sum + Number(event.teams || 0),
+                0
+            );
+
+
+        document.getElementById(
+            "report-total-conflicts"
+        ).textContent =
+            getConflicts().length;
+
+
+        const container =
+            document.getElementById(
+                "report-squadrons"
+            );
+
+
+        container.innerHTML =
+            appData.squadrons.map(
+                squadron => {
+
+                    const count =
+                        appData.events.filter(
+                            event =>
+                                event.squadronId ===
+                                squadron.id
+                        ).length;
+
+
+                    return `
+
+                        <div class="candidate">
+
+                            <strong>
+                                ${escapeHtml(
+                                    squadron.name
+                                )}
+                            </strong>
+
+                            <div class="candidate-reason">
+
+                                ${count}
+                                scheduled event(s)
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.21 — TIME FORMATTING
+    ============================================================= */
+
+    function formatTime(value) {
+
+        const stringValue =
+            String(value).padStart(4, "0");
+
+
+        return (
+            stringValue.substring(0,2) +
+            ":" +
+            stringValue.substring(2,4)
+        );
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.22 — MASTER RENDER FUNCTION
+    ============================================================= */
+
+    function renderAll() {
+
+        renderDashboard();
+
+        renderPersonnel();
+
+        renderEvents();
+
+        renderResources();
+
+        renderConflicts();
+
+        renderSchedule();
+
+        renderReports();
+
+        populateSquadronSelects();
+
+    }
+
+
+    /* =============================================================
+       SECTION 29.23 — APPLICATION STARTUP
+    ============================================================= */
+
+    function initializeApplication() {
+
+        loadData();
+
+        populateSquadronSelects();
+
+        populateResourceSelect();
+
+        renderAll();
+
+    }
+
+
+    initializeApplication();
+
+</script>
+
+
+</body>
+
+</html>
